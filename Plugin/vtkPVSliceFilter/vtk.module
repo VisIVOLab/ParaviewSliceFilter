@@ -1,0 +1,8 @@
+NAME
+  PVSliceFilter::vtkPVSliceFilter
+LIBRARY_NAME
+  vtkPVSliceFilter
+DEPENDS
+  VTK::FiltersCore
+PRIVATE_DEPENDS
+  VTK::CommonCore

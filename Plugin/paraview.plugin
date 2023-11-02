@@ -1,0 +1,11 @@
+NAME
+  PVSliceFilter
+CONDITION
+  NOT PARAVIEW_BUILD_LEGACY_REMOVE
+DESCRIPTION
+  Paraview plugin containing server manager xml and the server
+  manager classes to build. This plugin can be loaded on the server side.
+  It is used to extract a PV slice from a FITS cube given two points.
+REQUIRES_MODULES
+  VTK::CommonCore
+  VTK::FiltersCore
