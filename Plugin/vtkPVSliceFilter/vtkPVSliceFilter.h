@@ -2,29 +2,26 @@
 #define vtkPVSliceFilter_h
 
 #include <vtkImageData.h>
-#include <vtkAlgorithm.h>
+#include <vtkSimpleImageToImageFilter.h>
 
-class vtkPVSliceFilter : public vtkAlgorithm
+class vtkPVSliceFilter : public vtkSimpleImageToImageFilter
 {
 public:
     static vtkPVSliceFilter* New();
-    vtkTypeMacro(vtkPVSliceFilter, vtkAlgorithm);
-    void PrintSelf(ostream& os, vtkIndent indent) override;    
+    vtkTypeMacro(vtkPVSliceFilter, vtkSimpleImageToImageFilter);
+    void PrintSelf(ostream& os, vtkIndent indent) override;
 
+    void SetStartPoint(int, int);
+    void SetEndPoint(int, int);
 protected:
     vtkPVSliceFilter();
     ~vtkPVSliceFilter();
 
-    int RequestInformation(vtkInformation* request, vtkInformationVector** inInfo, vtkInformationVector* outInfo);
-    int RequestData(vtkInformation* request, vtkInformationVector** inputVector, vtkInformationVector* outputVector);
-
-    void SetStartPoint(int32_t, int32_t);
-    void SetEndPoint(int32_t, int32_t);
+    void SimpleExecute(vtkImageData* in, vtkImageData* out) override;
 private:
     vtkPVSliceFilter(const vtkPVSliceFilter&) = delete;
     void operator=(const vtkPVSliceFilter&) = delete;
 
-    int extractPVSlice(vtkImageData* in, vtkImageData* out);
 
     std::pair<int, int> StartPoint;
     std::pair<int, int> EndPoint;

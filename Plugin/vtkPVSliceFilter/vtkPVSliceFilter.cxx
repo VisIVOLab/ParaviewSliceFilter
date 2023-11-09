@@ -21,30 +21,14 @@ void vtkPVSliceFilter::PrintSelf(ostream& os, vtkIndent indent)
     this->Superclass::PrintSelf(os, indent);
 }
 
-int vtkPVSliceFilter::RequestInformation(vtkInformation* vtkNotUsed(request),
-                                         vtkInformationVector** vtkNotUsed(inputVector), vtkInformationVector* vtkNotUsed(outputVector))
-{
-    return 1;
-}
-
-
-int vtkPVSliceFilter::RequestData(vtkInformation *request, vtkInformationVector **inputVector, vtkInformationVector *outputVector)
-{
-    auto info = inputVector[0]->GetInformationObject(0);
-    auto imgData = vtkImageData::SafeDownCast(info->Get(vtkDataObject::DATA_OBJECT()));
-
-    auto outInfo = outputVector->GetInformationObject(0);
-    auto outImgData = vtkImageData::SafeDownCast(outInfo->Get(vtkDataObject::DATA_OBJECT()));
-
-    return extractPVSlice(imgData, outImgData);
-}
-
-int vtkPVSliceFilter::extractPVSlice(vtkImageData *in, vtkImageData *out)
+void vtkPVSliceFilter::SimpleExecute(vtkImageData *in, vtkImageData *out)
 {
     auto inDims = in->GetDimensions();
+    std::cerr << "Taking a cube of dimensions [" << inDims[0] << ", " << inDims[1] << ", " << inDims[2] << "] as input." << std::endl;
     int xDim = std::ceil(std::sqrt(std::pow(EndPoint.first - StartPoint.first, 2) + std::pow(EndPoint.second - StartPoint.second, 2)));
     int yDim = inDims[2];
     int dims[3] = {xDim, yDim, 1};
+    std::cerr << "Creating a PV slice of dimensions [" << xDim << ", " << yDim << ", 1]" << std::endl;
 
     out->SetDimensions(dims);
 
@@ -66,16 +50,14 @@ int vtkPVSliceFilter::extractPVSlice(vtkImageData *in, vtkImageData *out)
             out->SetScalarComponentFromDouble(i, j, 0, 0, pixIJ);
         }
     }
-
-    return 1;
 }
 
-void vtkPVSliceFilter::SetStartPoint(int32_t newStartPointX, int32_t newStartPointY)
+void vtkPVSliceFilter::SetStartPoint(int newStartPointX, int newStartPointY)
 {
     StartPoint = std::make_pair(newStartPointX, newStartPointY);
 }
 
-void vtkPVSliceFilter::SetEndPoint(int32_t newEndPointX, int32_t newEndPointY)
+void vtkPVSliceFilter::SetEndPoint(int newEndPointX, int newEndPointY)
 {
     EndPoint = std::make_pair(newEndPointX, newEndPointY);
 }
