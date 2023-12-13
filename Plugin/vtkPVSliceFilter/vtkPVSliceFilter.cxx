@@ -24,11 +24,11 @@ void vtkPVSliceFilter::PrintSelf(ostream& os, vtkIndent indent)
 void vtkPVSliceFilter::SimpleExecute(vtkImageData *in, vtkImageData *out)
 {
     auto inDims = in->GetDimensions();
-    std::cerr << "Taking a cube of dimensions [" << inDims[0] << ", " << inDims[1] << ", " << inDims[2] << "] as input." << std::endl;
+    //std::cerr << "Taking a cube of dimensions [" << inDims[0] << ", " << inDims[1] << ", " << inDims[2] << "] as input." << std::endl;
     int xDim = std::ceil(std::sqrt(std::pow(EndPoint.first - StartPoint.first, 2) + std::pow(EndPoint.second - StartPoint.second, 2)));
     int yDim = inDims[2];
     int dims[3] = {xDim, yDim, 1};
-    std::cerr << "Creating a PV slice of dimensions [" << xDim << ", " << yDim << ", 1]" << std::endl;
+    //std::cerr << "Creating a PV slice of dimensions [" << xDim << ", " << yDim << ", 1]" << std::endl;
 
     out->SetDimensions(dims);
 
